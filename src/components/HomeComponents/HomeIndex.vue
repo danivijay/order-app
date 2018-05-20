@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-list>
-      <v-list-tile @click="onIndexClick" v-for="(item, i) in dishTypes" :key="i">
+      <v-list-tile v-for="(item, i) in dishTypes" :key="i" @click="onIndexClick(item)">
         <v-list-tile-content>
           {{ item }}
         </v-list-tile-content>
@@ -18,14 +18,14 @@ export default {
     }
   },
   methods: {
-    onIndexClick() {
-      console.log("clicked")
-      // TODO:
+    onIndexClick(id) {
+      //console.log( '#' + id.toLowerCase().replace(/[^A-Z0-9]/ig, '-'))
+      $vuetify.goTo('#' + id.toLowerCase().replace(/[^A-Z0-9]/ig, '-'))
     }
   },
   computed: {
     dishTypes() {
-      let items = this.$store.state.items
+      let items = this.$store.getters.getItems
       let setDish = new Set(items.map(i => i.category))
       return [...setDish]
     }

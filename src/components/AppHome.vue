@@ -30,6 +30,9 @@ export default {
     items() {
       return this.$store.state.items
     }
+  },
+  created() {
+    this.$store.dispatch('initItems')
   }
 }
 </script>

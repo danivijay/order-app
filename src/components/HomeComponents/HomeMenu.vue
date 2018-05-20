@@ -2,7 +2,7 @@
   <v-card>
     <v-list>
       <span  v-for="(item, i) in dishTypes" :key="i">
-        <v-subheader class="yellow darken-2">
+        <v-subheader class="yellow darken-2" :id="item.toLowerCase().replace(/[^A-Z0-9]/ig, '-')">
           {{ item }}
         </v-subheader>
         <v-list-tile @click="onIndexClick" v-for="(item, i) in selectItems(item)" :key="i">
@@ -32,7 +32,7 @@
           <v-list-tile-action>
             100
           </v-list-tile-action>
-        </v-list-tile>
+      </v-list-tile>
       </span>
     </v-list>
   </v-card>
@@ -42,7 +42,6 @@
 export default {
   data() {
     return {
-      arr: ['item 1', 'item2']
     }
   },
   methods: {
@@ -51,13 +50,14 @@ export default {
       // TODO:
     },
     selectItems(type) {
-      let items = this.$store.state.items
+      let items = this.$store.getters.getItems
+      //console.log(items)
       return items.filter(i => i.category == type)
     }
   },
   computed: {
     dishTypes() {
-      let items = this.$store.state.items
+      let items = this.$store.getters.getItems
       let setDish = new Set(items.map(i => i.category))
       return [...setDish]
     }
