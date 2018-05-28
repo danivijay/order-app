@@ -18,26 +18,45 @@ export const store = new Vuex.Store({
       let check = ''
       // TODO: Validation
       state.items = payload
+      state.added = []
+    },
+    addAdded (state, payload) {
+      //console.log(payload)
+      let isInArray = []
+      if (state.added.length > 0) {
+        isInArray = state.added.filter(x => x.name == payload.name)
+      }
+      if (isInArray.length > 0) {
+        let index = state.added.findIndex(x => x.name === payload.name)
+        let val = state.added[index].value
+        val += payload.value
+        if(val >= 0)
+          state.added[index].value = val
+      } else {
+        state.added.push(payload)
+      }
     }
   },
   actions: {
     initItems ({commit, getters}) {
       return axios.get('https://thesmartq.firebaseio.com/menu.json')
         .then((response) => {
-          console.log(response.data)
           commit('initItems', response.data)
         })
         .catch(function (error) {
           throw error
         })
     },
-    addItems ({commit, getters}) {
-
+    addAdded ({commit, getters}, payload) {
+      commit('addAdded', payload)
     }
   },
   getters: {
     getItems (state) {
       return state.items
+    },
+    getAdded (state) {
+      return state.added
     }
   }
 })
